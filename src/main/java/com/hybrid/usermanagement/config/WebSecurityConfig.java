@@ -45,29 +45,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/cart").hasRole( "CUSTOMER")
-                .antMatchers("/api").hasRole( "ADMIN")
-                .antMatchers("/account").hasRole("CUSTOMER")
-                .antMatchers("/add-to-cart").hasRole("CUSTOMER")
-                .antMatchers("/payWithPaypal").hasRole("CUSTOMER")
-                .antMatchers("/pay/success").hasRole("CUSTOMER")
-                .antMatchers("/removeItem/**").hasRole("CUSTOMER")
-                .antMatchers("/").permitAll()
-                .antMatchers("/home").permitAll()
-                .antMatchers("/search/**").permitAll()
-                .antMatchers("/detail/**").permitAll();
-        http.authorizeRequests().and().formLogin()//
-                .loginPage("/login")//
-                .defaultSuccessUrl("/")//
-                .failureUrl("/login?message=error")//
-                .usernameParameter("username")//
-                .passwordParameter("password")
-                .and().logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login?message=logout");
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-        http.authorizeRequests()
-                .antMatchers("/api/book/create/list").hasRole("ADMIN")
-                .antMatchers("/api/book/get").hasRole("CUSTOMER")
-                .antMatchers("/api/book/get/**").hasRole("ADMIN")
-                .antMatchers("/api/signin").permitAll();
+                .antMatchers("/", "/home").permitAll() // Cho phép tất cả mọi người truy cập vào 2 địa chỉ này
+                .antMatchers("/create").permitAll()
+                .anyRequest().authenticated() // Tất cả các request khác đều cần phải xác thực mới được truy cập
+                .and()
+                .formLogin() // Cho phép người dùng xác thực bằng form login
+                .defaultSuccessUrl("/user")
+                .permitAll() // Tất cả đều được truy cập vào địa chỉ này
+                .and()
+                .logout() // Cho phép logout
+                .permitAll();
     }
 }

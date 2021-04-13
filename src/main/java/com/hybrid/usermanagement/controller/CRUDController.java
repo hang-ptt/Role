@@ -23,40 +23,40 @@ public class CRUDController {
 
     @Autowired
     RoleRepository roleRepository;
-    @GetMapping()
+    @GetMapping("/user")
     public String showAllUser(Model model){
         List<User> users= userRepository.findAll();
         model.addAttribute("users", users);
-        return "index";
+        return "user";
     }
 
-    @GetMapping("/detail/{id}")
-    public String viewUserDetail(@PathVariable("id")Long id, Model model){
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
-        model.addAttribute("user",user);
-        return "detail";
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deteleUser(@PathVariable("id") Long id, Model model){
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
-        userRepository.deleteById(id);
-        model.addAttribute("user",user);
-        return "index";
-    }
-    @PutMapping("/edit/{id}")
-    public String updateUser(@PathVariable("id") Long id, @Valid @ModelAttribute AddUserRequest addUserRequest){
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
-        Set<String> strRoles = addUserRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return "index";
-    }
+//    @GetMapping("/detail/{id}")
+//    public String viewUserDetail(@PathVariable("id")Long id, Model model){
+//        User user = userRepository.findById(id)
+//                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+//        model.addAttribute("user",user);
+//        return "detail";
+//    }
+//
+//    @DeleteMapping("/delete/{id}")
+//    public String deteleUser(@PathVariable("id") Long id, Model model){
+//        User user = userRepository.findById(id)
+//                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+//        userRepository.deleteById(id);
+//        model.addAttribute("user",user);
+//        return "index";
+//    }
+//    @PutMapping("/edit/{id}")
+//    public String updateUser(@PathVariable("id") Long id, @Valid @ModelAttribute AddUserRequest addUserRequest){
+//        User user = userRepository.findById(id)
+//                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+//        Set<String> strRoles = addUserRequest.getRole();
+//        Set<Role> roles = new HashSet<>();
+//
+//        user.setRoles(roles);
+//        userRepository.save(user);
+//
+//        return "index";
+//    }
 
 }
