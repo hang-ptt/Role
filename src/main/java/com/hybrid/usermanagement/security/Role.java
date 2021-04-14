@@ -1,11 +1,9 @@
-package com.hybrid.usermanagement.entity;
+package com.hybrid.usermanagement.security;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,7 +20,7 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Set<Account> accounts;
 
     public int getId() {
         return id;
@@ -40,11 +38,11 @@ public class Role {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 }

@@ -1,21 +1,12 @@
 package com.hybrid.usermanagement.controller;
 
-import com.hybrid.usermanagement.entity.Role;
-import com.hybrid.usermanagement.entity.User;
-import com.hybrid.usermanagement.repository.RoleRepository;
-import com.hybrid.usermanagement.repository.UserRepository;
-import com.hybrid.usermanagement.request.AddUserRequest;
-import com.hybrid.usermanagement.service.UserDetailsServiceImpl;
+import com.hybrid.usermanagement.security.RoleRepository;
+import com.hybrid.usermanagement.security.AccountRepository;
+import com.hybrid.usermanagement.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 public class LoginController {
@@ -23,7 +14,7 @@ public class LoginController {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserRepository userRepository;
+    AccountRepository userRepository;
 
     @Autowired
     RoleRepository roleRepository;

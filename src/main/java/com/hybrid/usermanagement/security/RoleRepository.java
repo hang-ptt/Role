@@ -1,6 +1,6 @@
-package com.hybrid.usermanagement.repository;
+package com.hybrid.usermanagement.security;
 
-import com.hybrid.usermanagement.entity.Role;
+import com.hybrid.usermanagement.security.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

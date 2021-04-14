@@ -1,4 +1,4 @@
-package com.hybrid.usermanagement.entity;
+package com.hybrid.usermanagement.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +30,7 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.authorities = authorities;
     }
-    public static UserDetailsImpl build(User user) {
+    public static UserDetailsImpl build(Account user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());

@@ -1,25 +1,23 @@
 package com.hybrid.usermanagement.entity;
 
-import com.hybrid.usermanagement.security.Role;
+import com.hybrid.usermanagement.security.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "tbl_user")
+@Table(name = "tbl_position")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,22 +25,11 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "tel")
-    private String tel;
-
-    @Column(name = "email")
-    private String email;
-
-    @ManyToMany
-    @JoinTable(
-            name = "tbl_user_position",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "position_id")
-    )
-    private List<Position> positions;
+    @ManyToMany(mappedBy = "positions")
+    private List<User> users;
 
     @Column(name = "created_at")
     private Date createdAt;
@@ -55,6 +42,4 @@ public class User {
 
     @Column(name = "status")
     private boolean status;
-
-
 }
