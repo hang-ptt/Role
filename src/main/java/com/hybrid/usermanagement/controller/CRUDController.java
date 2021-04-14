@@ -1,31 +1,25 @@
 package com.hybrid.usermanagement.controller;
 
-import com.hybrid.usermanagement.entity.Role;
-import com.hybrid.usermanagement.entity.User;
-import com.hybrid.usermanagement.repository.RoleRepository;
-import com.hybrid.usermanagement.repository.UserRepository;
-import com.hybrid.usermanagement.request.AddUserRequest;
+import com.hybrid.usermanagement.security.RoleRepository;
+import com.hybrid.usermanagement.security.Account;
+import com.hybrid.usermanagement.security.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class CRUDController {
     @Autowired
-    UserRepository userRepository;
+    AccountRepository userRepository;
 
     @Autowired
     RoleRepository roleRepository;
     @GetMapping("/user")
     public String showAllUser(Model model){
-        List<User> users= userRepository.findAll();
+        List<Account> users= userRepository.findAll();
         model.addAttribute("users", users);
         return "user";
     }
