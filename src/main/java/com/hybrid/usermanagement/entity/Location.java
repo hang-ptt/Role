@@ -1,23 +1,23 @@
 package com.hybrid.usermanagement.entity;
 
 import com.hybrid.usermanagement.security.Account;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "tbl_subject")
+@Table(name = "tbl_location")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Subject {
+@Builder
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
     @Column(name = "name")
@@ -25,6 +25,15 @@ public class Subject {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "tel")
+    private String tel;
+
+    @OneToMany(mappedBy = "location")
+    private List<Position> positions;
 
     @Column(name = "created_at")
     private Date createdAt;

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Position</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+    <form th:action="@{/pos/add/handle}" th:object="${position}" method="post">
+        <input type="hidden" th:name="|id|" th:value="${position.id}"/>
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-4 offset-md-2">
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Position Information</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th style="text-align: center;">Name</th>
+                        <td style="text-align: center;">
+                            <input type="text" class="form-control"  aria-describedby="helpId"
+                                   placeholder="" th:field="*{name}" required/>
+                        </td>
+                    <tr>
+                    <tr>
+                        <th style="text-align: center;">Location</th>
+                        <td style="text-align: center;">
+                            <select class="form-control" th:name="|location.id|" >
+                                <option th:each="lo,stat: ${locations}"  th:value="${lo.id}" th:utext="${lo.name}" th:selected="${position.location!=null&&lo.id==position.location.id}"></option>
+                            </select>
+                        </td>
+                    <tr>
+                    <tr>
+                        <th style="text-align: center;">Description</th>
+                        <td style="text-align: center;">
+                            <textarea class="form-control" name="" id="" rows="3" th:field="*{description}"></textarea>
+                        </td>
+                    <tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4 offset-md-1">
+                <a th:href="@{'/pos'}" type="button" class="btn btn-secondary">Back</a>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-8 offset-md-2">
+                <table class="table table-striped able-bordered" style="border: 1px solid black;">
+                    <thead class="thead-dark">
+                    <tr >
+                        <th style="text-align: center;" scope="col">No</th>
+                        <th style="text-align: center;" scope="col">Subject</th>
+                        <th style="text-align: center;" scope="col"><i class="fa fa-eye"
+                                                                                            aria-hidden="true" style="margin-right: 1%;"></i>View</th>
+                        <th style="text-align: center;" scope="col"><i class="fa fa-plus"
+                                                                                            aria-hidden="true" style="margin-right: 1%;"></i>Create</th>
+                        <th style="text-align: center;" scope="col"><i class="fa fa-pencil"
+                                                                                            aria-hidden="true" style="margin-right: 1%;"></i>Edit</th>
+                        <th style="text-align: center;" scope="col"><i class="fa fa-trash"
+                                                                                           aria-hidden="true" style="margin-right: 1%;"></i>Delete</th>
+                        <th style="text-align: center;" scope="col">All</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="ps,stat: ${position.positionSubjects}" >
+                        <th style="text-align: center;">
+                            <span th:utext="${stat.index+1}"></span>
+                            <input type="hidden" th:name="|positionSubjects[${stat.index}].id|" th:value="${ps.id}" />
+                            <input type="hidden" th:name="|positionSubjects[${stat.index}].subject.id|" th:value="${ps.subject.id}" />
+                            <input type="hidden" th:name="|positionSubjects[${stat.index}].subject.name|" th:value="${ps.subject.name}" />
+                        </th>
+                        <td style="text-align: center;"><span th:utext="${ps.subject.name}"></span></td>
+                        <td style="text-align: center;"><input style="cursor: pointer" th:name="|positionSubjects[${stat.index}].allowView|" th:checked="${ps.allowView}" th:id="${'view_'+stat.index}" type="checkbox" ></td>
+                        <td style="text-align: center;"><input style="cursor: pointer" th:name="|positionSubjects[${stat.index}].allowCreate|" th:checked="${ps.allowCreate}" th:id="${'create_'+stat.index}" type="checkbox"></td>
+                        <td style="text-align: center;"><input style="cursor: pointer" th:name="|positionSubjects[${stat.index}].allowEdit|" th:checked="${ps.allowEdit}" th:id="${'edit_'+stat.index}" type="checkbox"></td>
+                        <td style="text-align: center;"><input style="cursor: pointer" th:name="|positionSubjects[${stat.index}].allowDelete|" th:checked="${ps.allowDelete}" th:id="${'delete_'+stat.index}" type="checkbox"></td>
+                        <td style="text-align: center;"><input style="cursor: pointer"  th:id="${'all_'+stat.index}" type="checkbox" th:onchange="'changeCheckboxAll('+${stat.index}+')'"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="display: flex; flex-direction: row; justify-content: center;">
+            <button type="submit" class="btn btn-success" style="margin-right: 2%;">Save</button>
+            <a type="button" class="btn btn-secondary" th:href="@{'/pos'}">Cancel</a>
+        </div>
+    </form>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script>
+    function changeCheckboxAll(index){
+        var checkboxAll = document.getElementById("all_"+index)
+        var checkboxView = document.getElementById("view_"+index)
+        var checkboxEdit = document.getElementById("edit_"+index)
+        var checkboxCreate = document.getElementById("create_"+index)
+        var checkboxDelete = document.getElementById("delete_"+index)
+
+        if(checkboxAll.checked===true){
+            checkboxCreate.checked = true
+            checkboxView.checked = true
+            checkboxEdit.checked = true
+            checkboxDelete.checked = true
+        }
+        else{
+            checkboxCreate.checked = false
+            checkboxView.checked = false
+            checkboxEdit.checked = false
+            checkboxDelete.checked = false
+        }
+
+    }
+</script>
+</body>
+
+</html>

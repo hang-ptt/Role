@@ -1,5 +1,7 @@
 package com.hybrid.usermanagement.util;
 
+import com.hybrid.usermanagement.entity.Subject;
+import com.hybrid.usermanagement.repository.SubjectRepository;
 import com.hybrid.usermanagement.security.Role;
 import com.hybrid.usermanagement.security.RoleRepository;
 import com.hybrid.usermanagement.security.Account;
@@ -24,6 +26,9 @@ public class IntiUser {
     AccountRepository userRepository;
 
     @Autowired
+    SubjectRepository subjectRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @PostMapping("/create")
@@ -33,5 +38,12 @@ public class IntiUser {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/mock/pos/create")
+    public ResponseEntity<Subject> create(@RequestBody Subject sub){
+        sub.setStatus(true);
+        subjectRepository.save(sub);
+        return new ResponseEntity<>(sub, HttpStatus.OK);
     }
 }
