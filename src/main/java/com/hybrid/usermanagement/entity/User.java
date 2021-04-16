@@ -1,5 +1,6 @@
 package com.hybrid.usermanagement.entity;
 
+import com.hybrid.usermanagement.security.Account;
 import com.hybrid.usermanagement.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,11 +51,15 @@ public class User {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @Column(name = "created_by")
-    private Date createdBy;
+    @ManyToOne()
+    @JoinColumn(name = "created_by_account_id")
+    private Account createdBy;
+
+    @ManyToOne()
+    @JoinColumn(name = "updated_by_account_id")
+    private Account updatedBy;
 
     @Column(name = "status")
     private boolean status;
-
 
 }
