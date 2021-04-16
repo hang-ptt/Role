@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel ="stylesheet" href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css"/>
+
+<title>Subject List</title>
+
+</head>
+<body>
+<div>
+    <h3 class="alert alert-light">Subject list</h3>
+</div>
+<div class="bottom">
+
+    <div class="col">
+        <div class="container">
+
+            <button class="btn btn-success nBtn"> New A Record </button>
+            <div class="card">
+                <div class="card-block">
+                    <table class="table table-hover" id="table_id">
+                        <thead>
+                        <tr>
+                            <th>SUBJECT ID</th>
+                            <th>SUBJECT DESCRIPTION</th>
+                            <th>CREATE AT</th>
+                            <th>UPDATE AT</th>
+                            <th>CREATE BY</th>
+                            <th>STATUS</th>
+                            <th> </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each ="sub :${data}">
+                            <td th:text="${sub.id}"></td>
+                            <td th:text ="${sub.description}"></td>
+                            <td th:text ="${sub.createdAt.getDate()+'-'+(sub.createdAt.getMonth()+1)+'-'+(sub.createdAt.getYear()+1900)}"></td>
+                            <td th:text ="${sub.createdAt.getDate()+'-'+(sub.createdAt.getMonth()+1)+'-'+(sub.createdAt.getYear()+1900)}"></td>
+                            <td th:text ="${sub.createdBy}"></td>
+                            <td th:text ="${sub.status}"></td>
+                            <td>
+                                <a th:href="@{subject/delete/(id=${sub.id})}" class="btn btn-danger delBtn">Delete</a>
+                                <a th:href="@{subject/edit/(id=${sub.id})}" class="btn btn-primary eBtn">Edit</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+<!--                    <ul class="nav nav-pills">-->
+<!--                        <li class="nav item" th:each="i : ${#numbers.sequence(0, data.totalPages - 1)}">-->
+<!--                            <a th:href="@{subject(page=${i})}" th:text="${i}" class="nav-link"-->
+<!--                               th:classappend="${currentPage}==${i}?'active':''"></a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+
+                </div>
+            </div>
+
+
+            <!--#Modal form for user update-->
+            <div class="myFormUpdate">
+                <form th:action="@{subject/save}" method="post">
+                    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel">Update Subject</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="alert alert-info">
+                                        Input data to the fields
+                                    </p>
+                                    <div class="form-group">
+                                        <!--<label for="id" class="col-form-label">User id:</th:text></label>-->
+                                        <input type="hidden" class="form-control" id="id" name="id" value=""/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-form-label">Description</label>
+                                        <input type="text" class="form-control" id="description" name="description" value=""/>
+                                    </div>
+                                    <!--                                    <div class="form-group">-->
+                                    <!--                                        <label for="createdAt" class="col-form-label">User email:</label>-->
+                                    <!--                                        <input type="text" class="form-control" id="createdAt" name="createdAt" value=""/>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="form-group">-->
+                                    <!--                                        <label for="updatedAt" class="col-form-label">User email:</label>-->
+                                    <!--                                        <input type="text" class="form-control" id="updatedAt" name="updatedAt" value=""/>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="form-group">-->
+                                    <!--                                        <label for="createdBy" class="col-form-label">Created By</label>-->
+                                    <!--                                        <input type="text" class="form-control" id="createdBy" name="createdBy" value=""/>-->
+                                    <!--                                    </div>-->
+                                    <div class="form-group">
+                                        <label for="status" class="col-form-label">Status: </label>
+                                        <input type="text" class="form-control" id="status" name="status" value=""/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-primary" value="Save"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--End update form-->
+
+            <!--#Modal for user create-->
+            <div class="myFormCreate">
+                <form th:action="@{subject/save}" method="post">
+                    <div class="modal fade" id="myModalCreate" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabelCreate">Create user</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="alert alert-info">
+                                        Input data to the fields
+                                    </p>
+
+
+                                    <div class="form-group">
+                                        <label for="description" class="col-form-label">Description</label>
+                                        <input type="text" class="form-control" id="description" name="description" value=""/>
+                                    </div>
+                                    <!--                                    <div class="form-group">-->
+                                    <!--                                        <label for="createdAt" class="col-form-label">User email:</label>-->
+                                    <!--                                        <input type="text" class="form-control" id="createdAt" name="createdAt" value=""/>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="form-group">-->
+                                    <!--                                        <label for="updatedAt" class="col-form-label">User email:</label>-->
+                                    <!--                                        <input type="date" class="form-control" id="updatedAt" name="updatedAt" value=""/>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="form-group">-->
+                                    <!--                                        <label for="createdBy" class="col-form-label">Create By</label>-->
+                                    <!--                                        <input type="text" class="form-control" id="createdBy" name="createdBy" value=""/>-->
+                                    <!--                                    </div>-->
+                                    <div class="form-group">
+                                        <label for="status" class="col-form-label">Status: </label>
+                                        <input type="text" class="form-control" id="status" name="status" value=""/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-primary" value="Save"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--End form-->
+
+            <!-- #Modal for removing users -->
+            <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog" aria-labelledby="removeModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="removeModalCenterTitle">Alert message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="alert alert-danger">
+                                Are You sure You want to delete this User?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a href="" class="btn btn-danger" id="delRef">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{js/bottom.css}" src="../static/js/bottom.css"></script>
+<script type ="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{js/subject.js}" src="../static/js/subject.js"></script>
+<script type ="text/javascript" src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+</body>
+</html>

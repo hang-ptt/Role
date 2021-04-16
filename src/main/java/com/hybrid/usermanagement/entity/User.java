@@ -56,5 +56,7 @@ public class User {
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "img_url")
+    private String imgUrl;
 
 }

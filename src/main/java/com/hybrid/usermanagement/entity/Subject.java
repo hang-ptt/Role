@@ -1,9 +1,7 @@
 package com.hybrid.usermanagement.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.hybrid.usermanagement.security.Account;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +31,17 @@ public class Subject {
     private Date updatedAt;
 
     @Column(name = "created_by")
-    private Date createdBy;
+    private Account createdBy;
 
     @Column(name = "status")
     private boolean status;
+
+    public Subject(String name, String description, Date createdAt, Date updatedAt, Account createdBy, boolean status) {
+        this.name = name;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.createdBy = createdBy;
+        this.status = status;
+    }
 }
