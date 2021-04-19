@@ -8,16 +8,19 @@ $(document).ready(function(){
         if (text == 'Edit') {
             $.get(href, function (users, status) {
                 $('.myFormUpdate #id').val(users.id);
-                $('.myFormUpdate #username').val(users.username);
-                $('.myFormUpdate #password').val(users.password);
+                $('.myFormUpdate #name').val(users.name);
+                $('.myFormUpdate #address').val(users.address);
                 $('.myFormUpdate #email').val(users.email);
+                $('.myFormUpdate #tel').val(users.tel);
+                $('.myFormUpdate #avatar').attr("src",users.files);
             });
             $('.myFormUpdate #updateModal').modal();
         } else {
             //for creating user
-            $('.myFormCreate #username').val('');
-            $('.myFormCreate #password').val('');
+            $('.myFormCreate #name').val('');
+            $('.myFormCreate #address').val('');
             $('.myFormCreate #email').val('');
+            $('.myFormCreate #files').val('');
             $('.myFormCreate #myModalCreate').modal();
         }
     });
@@ -28,4 +31,6 @@ $(document).ready(function(){
         $('#removeModalCenter #delRef').attr('href', href);
         $('#removeModalCenter').modal();
     });
+
+    $('#table_id').DataTable();
 });

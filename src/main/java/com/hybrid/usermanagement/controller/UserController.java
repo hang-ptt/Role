@@ -13,10 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/account")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     UserRepository userRepository;
@@ -27,7 +28,7 @@ public class UserController {
 
         model.addAttribute("data", userRepository.findAll());
 
-        return "account";
+        return "user";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -49,15 +50,18 @@ public class UserController {
                 //save file
                 file.transferTo(fileServer);
                 //save file infor
-                users.setImgUrl("/directory/"+fileName);
+                users.setFiles("/directory/"+fileName);
+                Date date = new Date();
+                users.setCreatedAt(date);
+                users.setUpdatedAt(date);
                 userRepository.save(users);
             } catch (IllegalStateException | IOException e) {
-                return "redirect:/account?msg=error";
+                return "redirect:/user?msg=error";
             }
         }
 
         userRepository.save(users);
-        return "redirect:/account";
+        return "redirect:/user";
     }
     @GetMapping("/edit")
     @ResponseBody
@@ -69,7 +73,7 @@ public class UserController {
     public String delete(Long id) {
         userRepository.deleteById(id);
         logger.info("User has been removed. Users id: " + id);
-        return "redirect:/account";
+        return "redirect:/user";
     }
 
 }
