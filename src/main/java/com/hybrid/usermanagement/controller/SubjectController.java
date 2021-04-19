@@ -35,6 +35,7 @@ public class SubjectController {
         Date date = new Date();
         sub.setCreatedAt(date);
         sub.setUpdatedAt(date);
+        sub.setStatus(true);
         subjectRepository.save(sub);
         logger.info("New user was created " + sub);
         return "redirect:/subject";

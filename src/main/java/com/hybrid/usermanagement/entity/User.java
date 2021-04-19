@@ -65,4 +65,7 @@ public class User {
     @Column(name = "img_url")
     private String imgUrl;
 
+    @Column(name = "files")
+    private String files;
+
 }
