@@ -2,6 +2,8 @@ package com.hybrid.usermanagement.controller;
 
 import com.hybrid.usermanagement.entity.User;
 import com.hybrid.usermanagement.repository.UserRepository;
+import com.hybrid.usermanagement.service.PositionService;
+import com.hybrid.usermanagement.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,12 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PositionService positionService;
+
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @GetMapping("")
     public String showListOfUsers(Model model) {
@@ -30,6 +38,13 @@ public class UserController {
 
         return "user";
     }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public User getUser(@PathVariable("id")long id) {
+        return userService.getById(id);
+    }
+
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(HttpServletRequest req, User users, @RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
@@ -74,6 +89,21 @@ public class UserController {
         userRepository.deleteById(id);
         logger.info("User has been removed. Users id: " + id);
         return "redirect:/user";
+    }
+
+    @GetMapping("/assign")
+    public String viewAssignPosition(Model model){
+
+        model.addAttribute("users", userService.getAll());
+        model.addAttribute("positions", positionService.getAll());
+
+        return "assign";
+    }
+
+    @PostMapping("/assign/handle")
+    public String handleAssignUser(@RequestParam(name = "userId")long userId, @RequestParam(name = "positionId")long positionId){
+        userService.assignPositin(userId,positionId);
+        return "redirect:/user/assign";
     }
 
 }

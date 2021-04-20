@@ -48,29 +48,15 @@ public class PositionController {
     public String viewListPosition(Model model){
         List<Position> positions = positionService.getAll();
         model.addAttribute("positions", positions);
-        return "list-position";
+        return "theme-list-position";
     }
 
     @GetMapping("/add")
     public String viewAddPosition(Model model){
-
-//        Create new position
-        Position pos = new Position();
-
-        List<Subject> subjects = subjectService.getAll();
-        List<PositionSubject> positionSubjects = new ArrayList<>();
-
-        subjects.forEach(sub->{
-            PositionSubject ps = PositionSubject.builder().subject(sub).allowCreate(false).allowEdit(false).allowView(false).allowDelete(false).build();
-            positionSubjects.add(ps);
-        });
-
-        pos.setPositionSubjects(positionSubjects);
-
         model.addAttribute("locations", locationService.getAll());
-        model.addAttribute("position",pos);
+        model.addAttribute("position",positionService.getEmptyOne());
 
-        return "position";
+        return "theme-position";
     }
 
     @GetMapping("/edit/{id}")
@@ -81,21 +67,12 @@ public class PositionController {
         model.addAttribute("locations", locationService.getAll());
         model.addAttribute("position",position);
 
-        return "position";
+        return "theme-position";
     }
 
     @PostMapping("/add/handle")
     public String handleAddPosition(@ModelAttribute("position") Position position){
         try{
-            position.setCreatedAt(new Date());
-
-            position.getPositionSubjects().forEach(ps->{
-                ps.setStatus(true);
-                ps.setCreatedAt(new Date());
-            });
-
-            position.setStatus(true);
-
             positionService.create(position);
             return "redirect:/pos";
         }
