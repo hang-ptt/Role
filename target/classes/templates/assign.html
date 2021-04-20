@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Assign</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+<form action="/account/assign/handle" method="post">
+  <div class="row" style="margin-top: 2%;">
+    <div class="col-md-7 offset-md-3">
+      <div class="card">
+        <h5 class="card-header">Assign user</h5>
+        <div class="card-body row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="userId"></label>
+              <select class="form-control" name="userId" id="userId" onchange="selectUserChange()">
+                <option  th:value="-1" >--Select user--</option>
+                <option th:each="user,stat: ${users}"  th:value="${user.id}" th:utext="${user.name}" ></option>
+              </select>
+            </div>
+            <div style="display: flex; flex-direction: column; padding: 2%">
+              <img class="rounded" alt="..." id="avatar" />
+              <span id="name" style="font-size: large; font-weight: bold; color: #03A9F4" ></span>
+              <span id="email"></span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="positionId"></label>
+              <select class="form-control" name="positionId" id="positionId">
+                <option th:each="position,stat: ${positions}"  th:value="${position.id}" th:utext="${position.name+'['+position.location.name+']'}" ></option>
+              </select>
+            </div>
+            <ul class="list-group" id="listPosition">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 2%">
+    <div class="col-md-7 offset-md-3"  style="display: flex; flex-direction: row; justify-content: center;">
+      <button type="submit" class="btn btn-success" style="margin-right: 2%;">Save</button>
+      <button type="button" class="btn btn-secondary">Cancel</button>
+    </div>
+  </div>
+</form>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  function selectUserChange(){
+    var url = '/user/' + $('#userId').val();
+    $.get(url, function (user, status){
+      $('#name').text(user.name)
+      $('#email').text(user.email);
+      $('#avatar').attr("src",user.imgUrl);
+      $('#listPosition').empty();
+      user.positions.map(p=>{
+        $('#listPosition').append("<li class='list-group-item'>"+p.location.name+"<span class='badge badge-pill badge-success' style='margin-left: 2%'>"+p.name+"</span></li>")
+      })
+    });
+  }
+</script>
+</body>
+
+</html>
