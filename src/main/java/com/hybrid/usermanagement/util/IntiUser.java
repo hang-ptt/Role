@@ -10,14 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@RestController
+@Controller
 public class IntiUser {
     @Autowired
     RoleRepository roleRepository;
@@ -46,4 +48,7 @@ public class IntiUser {
         subjectRepository.save(sub);
         return new ResponseEntity<>(sub, HttpStatus.OK);
     }
+
+    @RequestMapping("/blank")
+    public String blank(){return "blank";}
 }
